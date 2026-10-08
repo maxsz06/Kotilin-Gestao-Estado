@@ -50,9 +50,7 @@ import com.example.gestodeestado.components.cardResultado
 
         var juros by remember { mutableDoubleStateOf(0.0) }
 
-        var montante by remember {
-            mutableDoubleStateOf(0.0)
-        }
+        val montante by jurosScreenViewModel.montante.observeAsState(initial = 0.0)
 
         Column (
             modifier = modifier.fillMaxSize(),
@@ -102,6 +100,8 @@ import com.example.gestodeestado.components.cardResultado
 
                          //   var capital by remember { mutableStateOf("") }
                             val capital by jurosScreenViewModel.capital.observeAsState(initial ="")
+                            val taxa by jurosScreenViewModel.taxa.observeAsState(initial = "")
+                            val tempo by jurosScreenViewModel.taxa.observeAsState(initial = "")
 
 
                             CaixaDeEntrada(  // -------- Entrada de Capital
@@ -119,7 +119,7 @@ import com.example.gestodeestado.components.cardResultado
                                 placeholder = "Taxa de juros mensal",
                                 keyboardType = KeyboardType.Decimal,
                                 value = taxa,
-                                atualizarValor = { taxa = it }
+                                atualizarValor = { jurosScreenViewModel.onTaxalChanged(it) }
                             )
 
                             CaixaDeEntrada(  // -------- Entrada de Meses
@@ -128,21 +128,13 @@ import com.example.gestodeestado.components.cardResultado
                                 placeholder = "Qual tempo em meses?",
                                 keyboardType = KeyboardType.Decimal,
                                 value = tempo,
-                                atualizarValor = { tempo = it }
+                                atualizarValor = { jurosScreenViewModel.onTempoChanged((it))}
                             )
 
                             Button(
                                 onClick = {
-                                    juros = calcularJuros(
-                                        capital =   capital.toDouble(),
-                                        taxa    =   taxa.toDouble(),
-                                        tempo   =   tempo.toDouble()
-                                    )
-
-                                    montante = calcularMontante(
-                                        capital = capital.toDouble(),
-                                        juros = juros
-                                    )
+                                    jurosScreenViewModel.calcularJurosInvestimento()
+                                    jurosScreenViewModel.calcularMontanteInvestimento()
                                 },
                                 modifier = Modifier.fillMaxWidth()
                                     .height(48.dp)
