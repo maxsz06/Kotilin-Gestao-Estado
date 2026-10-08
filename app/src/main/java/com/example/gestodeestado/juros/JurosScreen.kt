@@ -14,6 +14,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,7 +31,11 @@ import com.example.gestodeestado.calculos.calcularMontante
 import com.example.gestodeestado.components.CaixaDeEntrada
 import com.example.gestodeestado.components.cardResultado
     @Composable
-    fun JurosScreen(modifier: Modifier = Modifier) {
+    fun JurosScreen(
+        modifier: Modifier = Modifier,
+        jurosScreenViewModel: JurosScreenViewModel
+
+    ) {
         var capital: String by remember {
             mutableStateOf("")
         }
@@ -95,7 +100,9 @@ import com.example.gestodeestado.components.cardResultado
                                 fontWeight = FontWeight.Bold
                             )
 
-                            var capital by remember { mutableStateOf("") }
+                         //   var capital by remember { mutableStateOf("") }
+                            val capital by jurosScreenViewModel.capital.observeAsState(initial ="")
+
 
                             CaixaDeEntrada(  // -------- Entrada de Capital
                                 modifier = Modifier.fillMaxWidth(),
@@ -103,7 +110,7 @@ import com.example.gestodeestado.components.cardResultado
                                 placeholder = "Quanto deseja investir?",
                                 keyboardType = KeyboardType.Decimal,
                                 value = capital,
-                                atualizarValor = { capital = it }
+                                atualizarValor = { jurosScreenViewModel.onCapitalChanged(it) }
                             )
 
                             CaixaDeEntrada(  // -------- Entrada de Juros

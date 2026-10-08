@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.example.gestodeestado.juros.JurosScreen
+import com.example.gestodeestado.juros.JurosScreenViewModel
 import com.example.gestodeestado.ui.theme.GestãoDeEstadoTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,7 +22,8 @@ class MainActivity : ComponentActivity() {
                 ->
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                    JurosScreen(
-                       modifier = Modifier.padding(innerPadding)
+                       modifier = Modifier.padding(innerPadding),
+                       jurosScreenViewModel = JurosScreenViewModel()
                    )
                 }
             }
